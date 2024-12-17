@@ -6,7 +6,7 @@ namespace ChatbotPineBackend.Models
     public class Usuario
     {
         [Key]
-        public int UsuarioId { get; set; } // Chave primária
+        public int Usuario_id { get; set; } // Chave primária
         
         [Required]
         public string Nome { get; set; }

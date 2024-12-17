@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  # Serviço para o backend .NET
+  backend:
+    build:
+      context: .  # Diretório onde está o Dockerfile
+    ports:
+      - "7296:7296"  # Mapeando a porta 7296 do host para a porta 80 do container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development  # Define o ambiente como Desenvolvimento
+    networks:
+      - chatbot-network
+
+networks:
+  chatbot-network:
+    driver: bridge

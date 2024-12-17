@@ -1,0 +1,6 @@
+@ChatbotPineBackend_HostAddress = http://localhost:5031
+
+GET {{ChatbotPineBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

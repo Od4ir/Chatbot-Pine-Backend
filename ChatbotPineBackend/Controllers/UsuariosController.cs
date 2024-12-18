@@ -105,5 +105,19 @@ namespace ChatbotPineBackend.Controllers
             return Ok(usuario.Usuario_id);
         }
 
+        // GET: api/usuarios/{id}
+        [HttpGet("{id}")]
+        public IActionResult GetUsuarioPorId(int id)
+        {
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Usuario_id == id);
+
+            if (usuario == null)
+            {
+                return NotFound($"Usuário com ID {id} não encontrado.");
+            }
+
+            return Ok(usuario);
+        }
+
     }
 }

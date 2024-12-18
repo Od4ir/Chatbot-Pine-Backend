@@ -7,18 +7,18 @@ namespace ChatbotPineBackend.Models
     public class ProdutoContratado
     {
         [Key]
-        public int ProdutoContratadoId { get; set; } // Chave primária
+        public int ProdutoContratado_id { get; set; } // Chave primária
 
         public DateTime DataContratacao { get; set; }
 
         // Relação: Chave estrangeira para Usuario
         [ForeignKey("Usuario")]
-        public int UsuarioId { get; set; }
+        public int Usuario_id { get; set; }
         public Usuario Usuario { get; set; }
 
         // Relação: Chave estrangeira para ProdutoBancario
         [ForeignKey("ProdutoBancario")]
-        public int ProdutoId { get; set; }
+        public int Produto_id { get; set; }
         public ProdutoBancario ProdutoBancario { get; set; }
     }
 }

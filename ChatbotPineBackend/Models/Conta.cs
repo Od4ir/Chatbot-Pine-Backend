@@ -6,7 +6,7 @@ namespace ChatbotPineBackend.Models
     public class Conta
     {
         [Key]
-        public int NumeroConta { get; set; } // Chave primária
+        public int Numero_conta { get; set; } // Chave primária
 
         [Required]
         public decimal Saldo { get; set; }
@@ -18,7 +18,7 @@ namespace ChatbotPineBackend.Models
 
         // Relação: Chave estrangeira para Usuario
         [ForeignKey("Usuario")]
-        public int UsuarioId { get; set; }
+        public int Usuario_id { get; set; }
         public Usuario Usuario { get; set; }
 
         // Relação: Uma conta pode ter várias transações

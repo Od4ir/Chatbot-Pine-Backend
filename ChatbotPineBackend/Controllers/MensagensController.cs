@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using ChatbotPineBackend.Data;
 using ChatbotPineBackend.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace ChatbotPineBackend.Controllers
 {
@@ -16,22 +18,6 @@ namespace ChatbotPineBackend.Controllers
             _context = context;
         }
 
-        // GET: api/Mensagens/PorUsuario/{userId}
-        [HttpGet("PorUsuario/{user_id}")]
-        public async Task<IActionResult> GetMensagensByUserId(int user_id)
-        {
-            var mensagens = await _context.Mensagens
-                .Include(m => m.Conversa)
-                .Where(m => m.Conversa.Usuario_id == user_id)
-                .OrderBy(m => m.Data_hora)
-                .ToListAsync();
-
-            if (mensagens == null || mensagens.Count == 0)
-                return NotFound(new { mensagem = "Nenhuma mensagem encontrada para o usuário informado." });
-
-            return Ok(mensagens);
-        }
-
         // POST: api/Mensagens
         [HttpPost]
         public async Task<IActionResult> PostMensagem([FromBody] Mensagem novaMensagem)
@@ -39,14 +25,40 @@ namespace ChatbotPineBackend.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            // Verifica se a conversa existe no banco
             var conversa = await _context.Conversas.FindAsync(novaMensagem.Conversa_id);
             if (conversa == null)
                 return NotFound(new { mensagem = "Conversa não encontrada." });
 
+            // Adiciona a mensagem ao banco de dados
             _context.Mensagens.Add(novaMensagem);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(PostMensagem), new { id = novaMensagem.Mensagem_id }, novaMensagem);
+            // Envia a mensagem para o chatbot em localhost:5000
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    var resposta = await client.PostAsJsonAsync("http://localhost:5000/mensagem", new { mensagem = novaMensagem.Texto });
+                    
+                    if (!resposta.IsSuccessStatusCode)
+                    {
+                        return StatusCode((int)resposta.StatusCode, "Erro ao enviar mensagem para o chatbot.");
+                    }
+
+                    var conteudoResposta = await resposta.Content.ReadAsStringAsync();
+
+                    return Ok(new
+                    {
+                        mensagemEnviada = novaMensagem.Texto,
+                        respostaChatbot = conteudoResposta
+                    });
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, new { mensagem = "Erro ao se comunicar com o chatbot.", detalhes = ex.Message });
+                }
+            }
         }
     }
 }

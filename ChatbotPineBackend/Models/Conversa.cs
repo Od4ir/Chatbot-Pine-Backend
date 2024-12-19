@@ -16,7 +16,5 @@ namespace ChatbotPineBackend.Models
         [Required]
         public int Usuario_id { get; set; } // ID do usuário que iniciou a conversa
 
-        // Relacionamento: Uma conversa pode ter várias mensagens
-        public List<Mensagem> Mensagens { get; set; }
     }
 }

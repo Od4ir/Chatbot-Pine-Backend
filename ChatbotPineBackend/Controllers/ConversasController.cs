@@ -16,20 +16,6 @@ namespace ChatbotPineBackend.Controllers
             _context = context;
         }
 
-        // GET: api/Conversas/{id}
-        [HttpGet("{conversa_id}")]
-        public async Task<IActionResult> GetConversa(int conversa_id)
-        {
-            var conversa = await _context.Conversas
-                .Include(c => c.Mensagens)
-                .FirstOrDefaultAsync(c => c.Conversa_id == conversa_id);
-
-            if (conversa == null)
-                return NotFound(new { mensagem = "Conversa não encontrada." });
-
-            return Ok(conversa);
-        }
-
         // POST: api/Conversas
         [HttpPost]
         public async Task<IActionResult> PostConversa([FromBody] Conversa novaConversa)

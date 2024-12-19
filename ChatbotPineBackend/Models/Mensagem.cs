@@ -16,11 +16,10 @@ namespace ChatbotPineBackend.Models
         public DateTime Data_hora { get; set; }
 
         [Required]
-        public bool Remetente { get; set; } // True = Usuário, False = Modelo/Chatbot
+        public string Remetente { get; set; } // True = Usuário, False = Modelo/Chatbot
 
         // Chave estrangeira para Conversa
         [ForeignKey("Conversa")]
         public int Conversa_id { get; set; }
-        public Conversa Conversa { get; set; }
     }
 }

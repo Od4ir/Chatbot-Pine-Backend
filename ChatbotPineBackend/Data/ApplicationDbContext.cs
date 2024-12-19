@@ -14,5 +14,8 @@ namespace ChatbotPineBackend.Data
         public DbSet<Investimento> Investimentos { get; set; }
         public DbSet<ProdutoBancario> ProdutosBancarios { get; set; }
         public DbSet<ProdutoContratado> ProdutosContratados { get; set; }
+        public DbSet<Conversa> Conversas { get; set; }
+        public DbSet<Mensagem> Mensagens { get; set; }
     }
 }
+ 
